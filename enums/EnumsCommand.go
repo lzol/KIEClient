@@ -1,7 +1,7 @@
 package enums
 
 const (
-	INSERT             = "insert"
+	INSERT_OBJECT      = "insert"
 	BATCH_EXECUTION    = "batch-execution"
 	RETRACT            = "retract"
 	MODIFY             = "modify"

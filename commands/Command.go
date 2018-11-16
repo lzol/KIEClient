@@ -1,7 +1,11 @@
 package commands
 
-type Command struct {
-	CommandType enums.EnumsCommand
+type Command interface {
+	GetName() string
+}
+
+type Object struct {
+	m map[string]interface{}
 }
 
 type Commands struct {
