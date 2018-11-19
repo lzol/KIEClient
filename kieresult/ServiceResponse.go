@@ -10,14 +10,14 @@ type ServiceResponse struct {
 	Result       interface{} `json:"result"`
 }
 
-func (s *ServiceResponse) GetResults(resultKey string) (interface{}, error) {
+func (s *ServiceResponse) GetResults(resultKey string, i interface{}) (interface{}, error) {
 	r := s.Result.(map[string]interface{})
 	if _, ok := r[resultKey]; ok {
 		b, _ := json.Marshal(r[resultKey])
 		str := string(b)
-		e := ExecutionResult{}
-		err := json.Unmarshal([]byte(str), &e)
-		return e, err
+
+		err := json.Unmarshal([]byte(str), &i)
+		return nil, err
 	} else {
 		return s.Result, nil
 	}

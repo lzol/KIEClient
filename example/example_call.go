@@ -28,15 +28,18 @@ func main() {
 	defer response.Body.Close()
 	retMsg, _ := ioutil.ReadAll(response.Body)
 	resp := kieresult.ServiceResponse{}
-	resp.Result = kieresult.ExecutionResult{}
+	//resp.Result = kieresult.ExecutionResult{}
 	json.Unmarshal(retMsg, &resp)
 	//result := resp.Result
-	//fmt.Println(result.GetValue("applyInfo"))
-	tmp, err := resp.GetResults(enums.EXECUTION_RESULTS)
-	result := tmp.(kieresult.ExecutionResult)
-	applyInfo := pojo.ApplyInfo{}
-	err = result.GetValue("com.qchery.harper.fact.ApplyInfo", &applyInfo)
-	fmt.Println(applyInfo.Name, err)
+	fmt.Println(resp.ResponseType)
+	if resp.ResponseType == enums.RESPONSE_SUCCESS {
+		result := kieresult.ExecutionResult{}
+		_, err := resp.GetResults(enums.EXECUTION_RESULTS, &result)
+		fmt.Println(result)
+		applyInfo := pojo.ApplyInfo{}
+		err = result.GetValue("com.qchery.harper.fact.ApplyInfo", &applyInfo)
+		fmt.Println(applyInfo.Name, err)
+	}
 	//fmt.Println(result.GetValue("value"))
 	//fmt.Println(resp.Msg)
 	//result := kieresult.ExecutionResult{}
