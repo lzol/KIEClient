@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/lzol/KIEClient/kieresult"
 	"io/ioutil"
 	"net/http"
 )
@@ -24,11 +25,16 @@ func main() {
 	response, _ := client.Do(request)
 	defer response.Body.Close()
 	retMsg, _ := ioutil.ReadAll(response.Body)
-	resp := make(map[string]map[string]interface{})
+	resp := kieresult.ServiceResponse{}
+	resp.Result = kieresult.ExecutionResult{}
 	json.Unmarshal(retMsg, &resp)
-	strMsg := string(retMsg)
-	fmt.Println(strMsg)
+	//result := resp.Result
+	//fmt.Println(result.GetValue("applyInfo"))
+	tmp, err := resp.GetResults()
+	result := tmp.(kieresult.ExecutionResult)
+	fmt.Println(result.GetValue("com.qchery.harper.fact.ApplyInfo"), err)
+	//fmt.Println(result.GetValue("value"))
+	//fmt.Println(resp.Msg)
+	//result := kieresult.ExecutionResult{}
 
-	result := resp["result"]
-	fmt.Println(result["execution-results"])
 }
