@@ -5,6 +5,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/lzol/KIEClient/enums"
+	"github.com/lzol/KIEClient/example/pojo"
 	"github.com/lzol/KIEClient/kieresult"
 	"io/ioutil"
 	"net/http"
@@ -30,9 +32,11 @@ func main() {
 	json.Unmarshal(retMsg, &resp)
 	//result := resp.Result
 	//fmt.Println(result.GetValue("applyInfo"))
-	tmp, err := resp.GetResults()
+	tmp, err := resp.GetResults(enums.EXECUTION_RESULTS)
 	result := tmp.(kieresult.ExecutionResult)
-	fmt.Println(result.GetValue("com.qchery.harper.fact.ApplyInfo"), err)
+	applyInfo := pojo.ApplyInfo{}
+	err = result.GetValue("com.qchery.harper.fact.ApplyInfo", &applyInfo)
+	fmt.Println(applyInfo.Name, err)
 	//fmt.Println(result.GetValue("value"))
 	//fmt.Println(resp.Msg)
 	//result := kieresult.ExecutionResult{}
