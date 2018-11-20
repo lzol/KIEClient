@@ -3,17 +3,17 @@ package main
 import (
 	"fmt"
 	"github.com/lzol/KIEClient/enums"
-	"github.com/lzol/KIEClient/example/pojo"
+	"github.com/lzol/KIEClient/example/fact"
 	"github.com/lzol/KIEClient/kiecommands"
 	"github.com/lzol/KIEClient/kieresult"
 	"github.com/lzol/KIEClient/serviceclient"
 )
 
 func main() {
-	address := pojo.Address{}
+	address := fact.Address{}
 	address.Province = "aa"
 
-	applyInfo := pojo.ApplyInfo{}
+	applyInfo := fact.ApplyInfo{}
 	applyInfo.Age = 19
 	applyInfo.FamilyAddress = address
 
@@ -37,8 +37,7 @@ func main() {
 		if resp.ResponseType == enums.RESPONSE_SUCCESS {
 			result := kieresult.ExecutionResult{}
 			err = resp.GetResults(enums.EXECUTION_RESULTS, &result)
-			fmt.Println(result)
-			applyInfo := pojo.ApplyInfo{}
+			applyInfo := fact.ApplyInfo{}
 			err = result.GetValue("com.qchery.harper.fact.ApplyInfo", &applyInfo)
 			fmt.Println(applyInfo.Name, applyInfo.Age)
 		}

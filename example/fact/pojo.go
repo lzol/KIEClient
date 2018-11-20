@@ -1,4 +1,4 @@
-package pojo
+package fact
 
 type Address struct {
 	City     string `json:"city"`
