@@ -1,10 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/lzol/KIEClient/enums"
 	"github.com/lzol/KIEClient/example/pojo"
 	"github.com/lzol/KIEClient/kiecommands"
+	"github.com/lzol/KIEClient/kieresult"
+	"github.com/lzol/KIEClient/serviceclient"
 )
 
 func main() {
@@ -24,8 +26,22 @@ func main() {
 	commands.AddCommand(fireAllRulsCommand)
 	batchExecutionCommand := kiecommands.NewBatchExecutionCommand("ksessionId", commands)
 
-	fmt.Println(batchExecutionCommand.Commands)
-	b, _ := json.Marshal(batchExecutionCommand)
-	fmt.Println(string(b))
+	ruleServiceClient := serviceclient.RuleServiceClient{}
+	ruleServiceClient.Url = "http://localhost:8180/kie-server/services/rest/server"
+	ruleServiceClient.UserName = "admin"
+	ruleServiceClient.Password = "admin"
+	ruleServiceClient.ContainerId = "harper_1.0.0"
+
+	resp, err := ruleServiceClient.ExecWithResponse(batchExecutionCommand)
+	if err == nil {
+		if resp.ResponseType == enums.RESPONSE_SUCCESS {
+			result := kieresult.ExecutionResult{}
+			err = resp.GetResults(enums.EXECUTION_RESULTS, &result)
+			fmt.Println(result)
+			applyInfo := pojo.ApplyInfo{}
+			err = result.GetValue("com.qchery.harper.fact.ApplyInfo", &applyInfo)
+			fmt.Println(applyInfo.Name, applyInfo.Age)
+		}
+	}
 
 }

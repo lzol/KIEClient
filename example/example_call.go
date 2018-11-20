@@ -34,7 +34,7 @@ func main() {
 	fmt.Println(resp.ResponseType)
 	if resp.ResponseType == enums.RESPONSE_SUCCESS {
 		result := kieresult.ExecutionResult{}
-		_, err := resp.GetResults(enums.EXECUTION_RESULTS, &result)
+		err := resp.GetResults(enums.EXECUTION_RESULTS, &result)
 		fmt.Println(result)
 		applyInfo := pojo.ApplyInfo{}
 		err = result.GetValue("com.qchery.harper.fact.ApplyInfo", &applyInfo)
