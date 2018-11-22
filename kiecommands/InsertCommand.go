@@ -16,12 +16,9 @@ func (i InsertCommand) GetName() string {
 	return insertCommandName
 }
 
-func NewInsertCommand(className, outIdentifier string, objcet interface{}) InsertCommand {
+func NewInsertCommand(outIdentifier string, objcet Object) InsertCommand {
 	insertCommand := InsertCommand{}
-
-	insertCommand.Object = make(map[string]interface{})
-	insertCommand.Object[className] = objcet
-
+	insertCommand.Object = objcet
 	insertCommand.Disconnected = false
 	insertCommand.OutIdentifier = outIdentifier
 	insertCommand.EntryPoint = "DEFAULT"

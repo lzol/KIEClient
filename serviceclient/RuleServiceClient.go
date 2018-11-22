@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"github.com/kataras/iris/core/errors"
 	"github.com/lzol/KIEClient/kiecommands"
 	"github.com/lzol/KIEClient/kieresult"
@@ -31,7 +32,7 @@ func (r *RuleServiceClient) ExecWithResponse(command kiecommands.Command) (respo
 	if err != nil {
 		return response, err
 	}
-
+	fmt.Println(string(payload))
 	reader := bytes.NewReader(payload)
 	request, _ := http.NewRequest("POST", url, reader)
 	request.Header.Set("Authorization", "basic "+basic)

@@ -17,14 +17,17 @@ func main() {
 	applyInfo.Age = 19
 	applyInfo.FamilyAddress = address
 
-	insertCommand := kiecommands.NewInsertCommand("com.qchery.harper.fact.ApplyInfo", "applyInfo", applyInfo)
-
+	insertObject := kiecommands.NewObject("com.qchery.harper.fact.ApplyInfo", applyInfo)
+	insertCommand := kiecommands.NewInsertCommand("applyInfo", insertObject)
 	fireAllRulsCommand := kiecommands.NewFireAllRulsCommand(-1)
 
-	commands := kiecommands.Commands{}
-	commands.AddCommand(insertCommand)
-	commands.AddCommand(fireAllRulsCommand)
-	batchExecutionCommand := kiecommands.NewBatchExecutionCommand("ksessionId", commands)
+	batchExecutionCommand := kiecommands.NewBatchExecutionCommand("ksessionId")
+	batchExecutionCommand.AddCommand(insertCommand)
+	batchExecutionCommand.AddCommand(fireAllRulsCommand)
+	//objAddr := kiecommands.NewObject("aaa",address)
+	//fmt.Println(&objAddr)
+	//setGlobalCommand := kiecommands.NewSetGlobalCommand(objAddr,"addr","addr",true)
+	//batchExecutionCommand.AddCommand(setGlobalCommand)
 
 	ruleServiceClient := serviceclient.RuleServiceClient{}
 	ruleServiceClient.Url = "http://localhost:8180/kie-server/services/rest/server"

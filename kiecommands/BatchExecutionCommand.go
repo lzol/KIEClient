@@ -13,9 +13,14 @@ func (b BatchExecutionCommand) GetName() string {
 	return batchExecutionCommandName
 }
 
-func NewBatchExecutionCommand(kieSession string, commands Commands) BatchExecutionCommand {
+func NewBatchExecutionCommand(kieSession string) BatchExecutionCommand {
 	batchExecutionCommand := BatchExecutionCommand{}
 	batchExecutionCommand.Lookup = kieSession
-	batchExecutionCommand.Commands = commands.Commands
 	return batchExecutionCommand
+}
+
+func (b *BatchExecutionCommand) AddCommand(command Command) {
+	tmpMap := make(map[string]Command)
+	tmpMap[command.GetName()] = command
+	b.Commands = append(b.Commands, tmpMap)
 }
