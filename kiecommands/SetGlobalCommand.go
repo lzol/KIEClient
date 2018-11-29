@@ -5,10 +5,10 @@ import "github.com/lzol/KIEClient/enums"
 var setGlobalCommand = enums.SET_GLOBAL
 
 type SetGlobalCommand struct {
-	Identifier    string `json:"identifier"`
+	Identifier    string `json:"identifier,omitempty"`
 	Object        Object `json:"object"`
 	Out           bool   `json:"out"`
-	OutIdentifier string `json:"out-identifier"`
+	OutIdentifier string `json:"out-identifier,omitempty"`
 }
 
 func (s SetGlobalCommand) GetName() string {

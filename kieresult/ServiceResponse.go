@@ -30,7 +30,9 @@ type ExecutionResult struct {
 }
 
 func (e *ExecutionResult) GetValue(key string, i interface{}) error {
-	pojoMap := e.Results[0]["value"].(map[string]interface{})
+	mapLen := len(e.Results)
+	//如果FireAllRulsCommand命令OutIdentifier不为空，则返回值中会添加一个调用规则数量的Value值，所以统一取最后一个Results的value值
+	pojoMap := e.Results[mapLen-1]["value"].(map[string]interface{})
 	b, _ := json.Marshal(pojoMap[key])
 	err := json.Unmarshal(b, &i)
 	return err
