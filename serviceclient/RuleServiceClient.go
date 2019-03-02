@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"github.com/kataras/iris/core/errors"
 	"github.com/lzol/KIEClient/kiecommands"
 	"github.com/lzol/KIEClient/kieresult"
 	"io/ioutil"
@@ -41,7 +41,13 @@ func (r *RuleServiceClient) ExecWithResponse(command kiecommands.Command) (respo
 	client := &http.Client{}
 	postResp, err := client.Do(request)
 	defer postResp.Body.Close()
-	retMsg, _ := ioutil.ReadAll(postResp.Body)
+	if err != nil {
+		return response, err
+	}
+	retMsg, err := ioutil.ReadAll(postResp.Body)
+	if err != nil {
+		return response, err
+	}
 	json.Unmarshal(retMsg, &response)
 	return response, nil
 }
