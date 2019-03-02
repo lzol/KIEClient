@@ -40,10 +40,11 @@ func (r *RuleServiceClient) ExecWithResponse(command kiecommands.Command) (respo
 	request.Header.Set("X-KIE-ContentType", "json")
 	client := &http.Client{}
 	postResp, err := client.Do(request)
-	defer postResp.Body.Close()
 	if err != nil {
 		return response, err
 	}
+	defer postResp.Body.Close()
+
 	retMsg, err := ioutil.ReadAll(postResp.Body)
 	if err != nil {
 		return response, err

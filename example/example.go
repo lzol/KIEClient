@@ -38,7 +38,6 @@ func main() {
 	ruleServiceClient.ContainerId = "harper_1.0.0"
 
 	resp, err := ruleServiceClient.ExecWithResponse(batchExecutionCommand)
-	fmt.Println(resp)
 	if err == nil {
 		if resp.ResponseType == enums.RESPONSE_SUCCESS {
 			result := kieresult.ExecutionResult{}
@@ -48,6 +47,8 @@ func main() {
 			err = result.GetValue("com.qchery.harper.fact.ApplyInfo", &applyInfo)
 			fmt.Println(applyInfo.Name, applyInfo.Age)
 		}
+	} else {
+		fmt.Println(err.Error())
 	}
 
 }
