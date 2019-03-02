@@ -20,6 +20,8 @@ func main() {
 	insertObject := kiecommands.NewObject("com.qchery.harper.fact.ApplyInfo", applyInfo)
 	insertCommand := kiecommands.NewInsertCommand("applyInfo", insertObject)
 	fireAllRulsCommand := kiecommands.NewFireAllRulsCommand(-1)
+	fireAllRulsCommand.AgendaFilter = "aaa"
+	fireAllRulsCommand.OutIdentifier = "bbb"
 
 	batchExecutionCommand := kiecommands.NewBatchExecutionCommand("ksessionId")
 	batchExecutionCommand.AddCommand(insertCommand)
@@ -36,10 +38,12 @@ func main() {
 	ruleServiceClient.ContainerId = "harper_1.0.0"
 
 	resp, err := ruleServiceClient.ExecWithResponse(batchExecutionCommand)
+	fmt.Println(resp)
 	if err == nil {
 		if resp.ResponseType == enums.RESPONSE_SUCCESS {
 			result := kieresult.ExecutionResult{}
 			err = resp.GetResults(enums.EXECUTION_RESULTS, &result)
+			fmt.Println(result)
 			applyInfo := fact.ApplyInfo{}
 			err = result.GetValue("com.qchery.harper.fact.ApplyInfo", &applyInfo)
 			fmt.Println(applyInfo.Name, applyInfo.Age)
